@@ -30,7 +30,7 @@ const query = `
           }
         }
       }
-      lists(where: { name: { _in: ["backlog", "Tech Recommendations"] } }) {
+	  lists(where: { name: { _in: ["backlog", "Tech Recommendations", "read"] } }) {
         name
         list_books(limit: 10) {
           book {
@@ -47,6 +47,9 @@ const query = `
               }
             }
           }
+		  user_books {
+			rating
+		  }
         }
       }
     }
@@ -68,12 +71,13 @@ const allLists = result.data?.me?.[0]?.lists || [];
 
 const backlogBooks = allLists.find((l: any) => l.name === "backlog")?.list_books || [];
 const recBooks = allLists.find((l: any) => l.name.includes("Recommendation"))?.list_books || [];
+const readBooks = allLists.find((l: any) => l.name === "read")?.list_books || [];
 ---
 
 <Layout title="saif's reading list" description="Saif's personal reading list and book tracking.">
   <main class="font-space">
     <h1 class="mb-6 text-2xl font-bold text-[#DADADB] sm:text-3xl">
-      Currently Reading
+      Reading
     </h1>
     <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-4">
       {
@@ -87,7 +91,7 @@ const recBooks = allLists.find((l: any) => l.name.includes("Recommendation"))?.l
     </div>
 
     <h1 class="mb-6 mt-6 text-2xl font-bold text-[#DADADB] sm:text-3xl">
-      Want To Read
+      Backlog
     </h1>
     <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-4">
       {
@@ -98,12 +102,12 @@ const recBooks = allLists.find((l: any) => l.name.includes("Recommendation"))?.l
     </div>
 
     <h1 class="mb-6 mt-6 text-2xl font-bold text-[#DADADB] sm:text-3xl">
-      Recommendations
+      Read
     </h1>
     <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-4">
       {
-        recBooks.map((item: any) => (
-          <BookCard book={item.book} />
+		readBooks.sort((a,b) => b.user_books?.[0]?.rating - a.user_books?.[0]?.rating).map((item: any) => (
+		  <BookCard book={item.book} rating={item.user_books[0].rating} />
         ))
       }
     </div>
