@@ -106,7 +106,7 @@ const readBooks = allLists.find((l: any) => l.name === "read")?.list_books || []
     </h1>
     <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-4">
       {
-		readBooks.sort((a,b) => b.user_books?.[0]?.rating - a.user_books?.[0]?.rating).map((item: any) => (
+		readBooks.sort((a:any,b:any) => b.user_books?.[0]?.rating - a.user_books?.[0]?.rating).map((item: any) => (
 		  <BookCard book={item.book} rating={item.user_books[0].rating} />
         ))
       }
