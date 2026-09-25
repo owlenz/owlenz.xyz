@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/9ae611a455b90cf061d8f332b977e387bda8e1ca";
+    nixpkgs.url = "github:NixOS/nixpkgs";
   };
 
   outputs =
@@ -14,7 +14,7 @@
       devShells.${system}.default = pkgs.mkShell {
         name = "Website";
         buildInputs = with pkgs; [
-          bun
+          # node
         ];
       };
     };
